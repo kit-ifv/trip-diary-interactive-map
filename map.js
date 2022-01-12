@@ -16,12 +16,17 @@
 	var popupDurationMs = 1500;
 	
 	var originIcon = new L.icon({
-		iconUrl: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|e85141&chf=a,s,ee00FFFF', 
+		iconUrl: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png', 
 		iconAnchor:   [10,33]
 	});
 	
 	var destinationIcon = new L.icon({
-		iconUrl: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|2ecc71&chf=a,s,ee00FFFF', 
+		iconUrl: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png', 
+		iconAnchor:   [10,33]
+	});
+
+	var searchIcon = new L.icon({
+		iconUrl: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', 
 		iconAnchor:   [10,33]
 	});
 	
@@ -95,6 +100,14 @@
 			minZoom: 1,
 			maxZoom: 19
 		}).addTo(map);
+
+		var geocoder = L.Control.geocoder({defaultMarkGeocode: false})
+							    .on('markgeocode', function(e) {
+							    	var latlng = e.geocode.center;
+							    	var marker = L.marker(latlng,{icon: searchIcon}).addTo(map);
+							    	map.fitBounds(e.geocode.bbox);
+							    })
+							    .addTo(map);
 		
 		if (addKitLayer) {
 			// west
